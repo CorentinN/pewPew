@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>piou piou</title>
+	<style>
+		{ padding : 0, margin:0;}
+		canvas {background: #2c3e50; display: block; margin: 0 auto;}
+	</style>
+</head>
+<body>
+	<canvas id = "myCanvas" width="650" height="520">
+		
+	</canvas>
+	<script>
+
+		////////////////////////
+		/////instancing canvas//
+		////////////////////////
+
+		var canvas = document.getElementById("myCanvas");
+		var ctx = canvas.getContext("2d");
+
+		var lives = " you can't die.";
+		var score = 0;
+
+		// projectile
+
+		var x = launchX ;
+		var y = canvas.height -30 ;
+		var dx = 0;
+		var dy = -25; 
+		var ballRadius = 20;
+
+		// launcher
+
+		var launchHeight = 30;
+		var launchWidth = 65;
+		var launchX = (canvas.width - launchWidth)/2;
+
+		var pressed = false;
+		var trajectX = [];
+
+		// // targets 
+		// var randheight = (Math.random() * canvas.height);
+		// var heightP = (( canvas.height / 100 ) * 40);
+		var tarY = Math.floor(Math.random() * 208);
+		var tarX = Math.floor(Math.random() * 625);
+		var tarWidth = 70;
+		var tarHeight = 70;
+
+		// loader
+		var load = -canvas.height;
+
+
+
+		
+		///////////
+		// EVENTS//
+		///////////
+
+		document.addEventListener("mousemove", mouseMoveHandler, false);
+		document.addEventListener("keyup", keyDownHandler, false);
+
+		////////////
+
+ 
+		function mouseMoveHandler(e) {
+	    var relativeX = e.clientX - canvas.offsetLeft;
+		    if(relativeX > 0 && relativeX < canvas.width) {
+		        launchX = relativeX - launchWidth/2;
+		    }
+		};
+
+
+		function keyDownHandler(e){
+
+			if (e.keyCode == 32){
+				pressed = true;
+			}
+		};
+
+
+
+		
+			/////////////
+			// drawings//
+			/////////////
+
+
+
+		function drawBall(){
+			ctx.beginPath();
+			ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+			ctx.fillStyle = "#0095DD";
+			ctx.fill();
+			ctx.closePath();
+
+		};
+		function drawLoader(){
+			ctx.beginPath();
+			ctx.rect(0, load, canvas.width, canvas.height);
+			ctx.fillStyle ="lightgrey";
+			ctx.fill();
+			ctx.closePath();
+		};
+
+		function drawLauncher(){
+			ctx.beginPath();
+			ctx.rect(launchX,canvas.height - launchHeight, launchWidth, launchHeight );
+			ctx.fillStyle = "#2980b9";
+			ctx.fill();
+			ctx.closePath();
+		};
+
+		function drawTarget(){
+
+			ctx.beginPath();
+			ctx.rect(tarX,tarY,tarWidth,tarHeight);
+			ctx.fillStyle = "#e74c3c";
+			ctx.fill();
+			ctx.closePath();
+
+		};
+
+		/// COLLISION DETECTION
+
+		function collisionDetection(){
+
+			if(tarX < x +ballRadius && tarX + tarWidth > x - ballRadius && tarY + tarHeight > y -ballRadius){
+				tarY = Math.floor(Math.random() * 208);
+				tarX = Math.floor(Math.random() * 625);
+				drawTarget();
+				score += 1;
+				
+			}
+		};
+
+		function endGame(){
+			load += 1;
+			if(load == 0){
+				alert("GAME OVER YOUR SCORE IS " + score)
+				document.location.reload();
+			}
+		}
+		function drawScore() {
+
+		    ctx.font = "16px Arial";
+		    ctx.fillStyle = "#0095DD";
+		    ctx.fillText("Score: "+score, 8, 20);
+		};
+
+		function drawLives() {
+
+		    ctx.font = "16px Arial";
+		    ctx.fillStyle = "#0095DD";
+		    ctx.fillText("Bute un max de cubes avant que l'écran ne devienne gris", canvas.width-420, 20);
+		};
+
+		function draw(){
+
+			ctx.clearRect(0,0, canvas.width, canvas.height);
+
+			drawLoader();
+			drawBall();
+			drawLauncher();
+			drawTarget();
+			drawLives();
+			drawScore();
+			collisionDetection()
+			endGame();
+
+
+			if(pressed ){
+				trajectX[0] = launchX;
+				//x += dx;
+				y += dy;
+			};
+
+			if (y < 0) {
+
+				pressed = false;
+				y = (canvas.height - launchHeight) ;
+				x = launchWidth / 2;
+			};
+			if (!pressed){
+
+				x = launchX +(launchWidth) / 2;
+			}
+
+			// collision detection
+
+
+
+			requestAnimationFrame(draw);
+
+		};
+
+			/////////////////
+			// end drawings//
+			/////////////////
+		draw();
+		
+
+
+
+	</script>
+</body>
+</html>
