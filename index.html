@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>piou piou</title>
+	<title>pewPew</title>
 	<style>
 		#rules{
 			width:650px;
@@ -90,7 +90,7 @@
 	<div id="rules">
 		<div class="menu_content">
 			<div id="buttonStart" onclick="displayToggleStart()">
-				<h1>Jouer</h1>
+				<h1>Play</h1>
 			</div>
 			<p>Control the canon with the mouse and shoot the red squares with the spacebar</p>
 		</div>
@@ -98,10 +98,10 @@
 
 	<div id="gameOver">
 		<h1>GAME OVER</h1>
-		<p >Your score is :</p>
+		<p >your score is :</p>
 		<p id = "scoreEnd" ></p>  
 		<div id="playAgain" onclick='displayToggleEnd()'>
-			<span>Rejouer</span>
+			<span>Replay</span>
 		</div>
 	</div> 
 
@@ -155,9 +155,6 @@
 		var load = -canvas.height;
 
 		//dom
-		var lol = document.getElementById("bouton");
-
-		lol.setAttribute('disabled');
 		var startButton = document.getElementById("buttonStart");
 		var toggleCanvas = document.getElementById("canvasContainer");
 		var targetButtonStart = document.getElementById("rules");
@@ -279,8 +276,8 @@
 		// FIN DU JEU
 
 		function endGame(){
-			load += 0.5;
-			if(load == 0.5){
+			load += 1;
+			if(load === 1){
 
 				resetBall();
 				cancelAnimationFrame(request);
