@@ -56,13 +56,11 @@
 
 		}
 		#gameOver p{
-			margin-bottom: 140px;
 		}
 		#scoreEnd{
 			font-size:65px;
 			text-align:center;
 			color:#fff;
-			margin-left: calc(50% - 22px );
 		}
 		
 		#playAgain span{
@@ -101,7 +99,8 @@
 
 	<div id="gameOver">
 		<h1>GAME OVER</h1>
-		<p >Votre score est de :</br><span id = "scoreEnd" ></span></p>
+		<p >Votre score est de :</p>
+		<p id = "scoreEnd" ></p>  
 		<div id="playAgain" onclick='displayToggleEnd()'>
 			<span>Rejouer</span>
 		</div>
@@ -187,7 +186,7 @@
 				toggleGameOver.style.display = "none";
 
 				toggleCanvas.style.display = "";
-				scoreEnd.innerHTML ="Votre score est de :";
+				scoreEnd.innerHTML ="";
 				draw();
 			}
 		}
@@ -277,8 +276,8 @@
 		// FIN DU JEU
 
 		function endGame(){
-			load += 10;
-			if(load == 10 ){
+			load += 1;
+			if(load == 1){
 
 				cancelAnimationFrame(request);
 				scoreEnd.insertAdjacentHTML('beforeend',score);
@@ -301,7 +300,6 @@
 
 		    ctx.font = "16px Arial";
 		    ctx.fillStyle = "#0095DD";
-		    ctx.fillText("Bute un max de cubes avant que l'écran ne devienne gris", canvas.width-420, 20);
 		};
 
 		function draw(){
