@@ -92,13 +92,13 @@
 			<div id="buttonStart" onclick="displayToggleStart()">
 				<h1>Jouer</h1>
 			</div>
-			<p>Controlez le canon avec la souris et tirez sur les carré rouges avec la touche espace</p>
+			<p>Control the canon with the mouse and shoot the red squares with the spacebar</p>
 		</div>
 	</div>
 
 	<div id="gameOver">
 		<h1>GAME OVER</h1>
-		<p >Votre score est :</p>
+		<p >Your score is :</p>
 		<p id = "scoreEnd" ></p>  
 		<div id="playAgain" onclick='displayToggleEnd()'>
 			<span>Rejouer</span>
@@ -123,7 +123,6 @@
 
 
 		
-	
 		var canvas = document.getElementById("myCanvas");
 		var ctx = canvas.getContext("2d");
 		var score = 0;
@@ -156,7 +155,9 @@
 		var load = -canvas.height;
 
 		//dom
+		var lol = document.getElementById("bouton");
 
+		lol.setAttribute('disabled');
 		var startButton = document.getElementById("buttonStart");
 		var toggleCanvas = document.getElementById("canvasContainer");
 		var targetButtonStart = document.getElementById("rules");
