@@ -83,7 +83,6 @@
 		 	display: block; 
 			margin: 0 auto;
 		}
-
 	</style>
 </head>
 
@@ -99,7 +98,7 @@
 
 	<div id="gameOver">
 		<h1>GAME OVER</h1>
-		<p >Votre score est de :</p>
+		<p >Votre score est :</p>
 		<p id = "scoreEnd" ></p>  
 		<div id="playAgain" onclick='displayToggleEnd()'>
 			<span>Rejouer</span>
@@ -108,8 +107,8 @@
 
 	<div id="canvasContainer">
 		<canvas id = "myCanvas" width="650" height="520">
-	</div>
 	</canvas>
+	</div>
 	<script>
 
 
@@ -147,8 +146,8 @@
 		var trajectX = [];
 
 		// // targets
-		var tarY = Math.floor(Math.random() * 208);
-		var tarX = Math.floor(Math.random() * 625);
+		var tarY = Math.floor(Math.random() * 138);
+		var tarX = Math.floor(Math.random() * 555);
 		var tarWidth = 70;
 		var tarHeight = 70;
 
@@ -174,11 +173,7 @@
 				targetButtonStart.style.display = "none";
 				draw();
 
-
 				} 
-			else {
-				toggleCanvas.style.display = "none";
-			}
 		} 
 
 		function displayToggleEnd(){
@@ -187,6 +182,7 @@
 
 				toggleCanvas.style.display = "";
 				scoreEnd.innerHTML ="";
+				resetBall();
 				draw();
 			}
 		}
@@ -265,20 +261,27 @@
 		function collisionDetection(){
 
 			if(tarX < x +ballRadius && tarX + tarWidth > x - ballRadius && tarY + tarHeight > y -ballRadius){
-				tarY = Math.floor(Math.random() * 208);
-				tarX = Math.floor(Math.random() * 625);
+				tarY = Math.floor(Math.random() * 138);
+				tarX = Math.floor(Math.random() * 555);
 				drawTarget();
 				score += 1;
-				
+				resetBall();
 			}
 		};
 
+		// Reset ball sur son canon
+		function resetBall(){
+			pressed = false;
+				y = (canvas.height - launchHeight) ;
+				x = launchX +(launchWidth) / 2;
+		}
 		// FIN DU JEU
 
 		function endGame(){
-			load += 1;
-			if(load == 1){
+			load += 0.5;
+			if(load == 0.5){
 
+				resetBall();
 				cancelAnimationFrame(request);
 				scoreEnd.insertAdjacentHTML('beforeend',score);
 				score= 0;
@@ -291,15 +294,9 @@
 
 		function drawScore() {
 
-		    ctx.font = "16px Arial";
+		    ctx.font = "19px Arial";
 		    ctx.fillStyle = "#0095DD";
-		    ctx.fillText("Score: "+score, 8, 20);
-		};
-
-		function drawLives() {
-
-		    ctx.font = "16px Arial";
-		    ctx.fillStyle = "#0095DD";
+		    ctx.fillText("Score: "+score, 13, 30);
 		};
 
 		function draw(){
@@ -310,7 +307,6 @@
 			drawBall();
 			drawLauncher();
 			drawTarget();
-			drawLives();
 			drawScore();
 			collisionDetection()
 			endGame();
@@ -320,18 +316,16 @@
 				trajectX[0] = launchX;
 				//x += dx;
 				y += dy;
-			};
-
-			if (y < 0) {
-
-				pressed = false;
-				y = (canvas.height - launchHeight) ;
-				x = launchWidth / 2;
-			};
-			if (!pressed){
+			}else if(!pressed){
 
 				x = launchX +(launchWidth) / 2;
 			}
+
+			if (y < 0) {
+
+				resetBall()
+			};
+			
 
 			// collision detection
 
