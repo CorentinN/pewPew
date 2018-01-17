@@ -4,24 +4,93 @@
 	<meta charset="UTF-8">
 	<title>piou piou</title>
 	<style>
-		{ padding : 0, margin:0;}
-		canvas {background: #2c3e50; display: block; margin: 0 auto;}
+		.rules{
+			width:650px;
+			height:520px;
+			margin: 0 auto;
+			background-color: #2c3e50;
+			display:flex;
+			justify-content: center;
+			align-content: center;
+		}
+
+		#buttonStart {
+			padding: 5px;
+			background-color: pink;
+			font-family:sans-serif;
+			font-size:24px;
+			margin-top:50%;
+		}
+
+		#buttonStart:hover{
+			cursor:pointer;
+		}
+
+		canvas {
+			background: #2c3e50;
+		 	display: block; 
+			margin: 0 auto;
+		}
+
 	</style>
 </head>
 <body>
-	<canvas id = "myCanvas" width="650" height="520">
-		
+	<div id="rules">
+		<h1 id="buttonStart"></h1>
+	</div>
+	<div id="canvasContainer">
+		<canvas id = "myCanvas" width="650" height="520">
+	</div>
 	</canvas>
 	<script>
 
-		////////////////////////
-		/////instancing canvas//
-		////////////////////////
 
+		/////////////////////////
+		/////instancing canvas///
+		/////////////////////////
+
+		// var check = false;
+		
+
+		
+		var toggleCanvas = document.getElementById("canvasContainer");
+		var targetButtonStart = document.getElementById("rules");
+		toggleCanvas.style.display = "none";
+			
+		
+		function displayToggle() {
+			
+			if (toggleCanvas.style.display === "none") {
+				toggleCanvas.style.display = "";
+				targetButtonStart.style.display = "none";
+				check = true;
+				draw();
+
+
+				} 
+			else {
+				toggleCanvas.style.display = "none";
+				check = false;
+			}
+		} 
+
+
+		var startButton = document.getElementById("buttonStart");
+		var h1 = document.createElement("h1");
+		startButton.appendChild(document.createElement('h1'));
+		// // startButton.appendChild(document.createTextNode('Start the game'));
+		document.getElementsByTagName("h1")[0].innerHTML = "Jouer";
+		startButton.setAttribute('onclick',"displayToggle()")
+		
+		
+
+		// starting.className = "go";
+		// starting.appendChild(document.createTextNode('Play the game'));
+		// starting.addEventListener('click',)
+
+		var check = false;
 		var canvas = document.getElementById("myCanvas");
 		var ctx = canvas.getContext("2d");
-
-		var lives = " you can't die.";
 		var score = 0;
 
 		// projectile
@@ -38,7 +107,7 @@
 		var launchWidth = 65;
 		var launchX = (canvas.width - launchWidth)/2;
 
-		var pressed = false;
+		var pressed = false; 
 		var trajectX = [];
 
 		// // targets 
@@ -138,9 +207,12 @@
 
 		function endGame(){
 			load += 1;
-			if(load == 0){
-				alert("GAME OVER YOUR SCORE IS " + score)
-				document.location.reload();
+			if(load == 0 && check){
+				requestAnimationFrame(cancel);
+
+				// alert("GAME OVER YOUR SCORE IS " + score);
+				 targetButtonStart.style.display = "";
+				// document.location.reload();
 			}
 		}
 		function drawScore() {
@@ -171,7 +243,7 @@
 			endGame();
 
 
-			if(pressed ){
+			if(pressed){
 				trajectX[0] = launchX;
 				//x += dx;
 				y += dy;
@@ -199,9 +271,16 @@
 			/////////////////
 			// end drawings//
 			/////////////////
-		draw();
+		
+		/////////
+		// DOM //
+		/////////
 		
 
+		// var starting = document.createElement("button");
+		// starting.className = "go";
+		// starting.appendChild(document.createTextNode('Play the game'));
+		// starting.addEventListener('click',)
 
 
 	</script>
