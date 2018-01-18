@@ -114,7 +114,8 @@
 			<div id="buttonStart" onclick="displayToggleStart()">
 				<h1>Play</h1>
 			</div>
-			<p>Control the canon with the mouse and shoot the red squares with the spacebar</p>
+			<p>Controle la canon avec la souris et tire sur les carrés rouge avec la barre espace.</p>
+			<p>Control the canon with the mouse and shoot the red squares with the spacebar.</p>
 		</div>
 	</div>
 
@@ -183,6 +184,7 @@
 		// loader
 
 		var load = -canvas.height;
+		console.log(load);
 
 		//dom
 		var startButton = document.getElementById("buttonStart");
@@ -294,11 +296,12 @@
 
 		function collisionDetection(){
 
-			if(tarX < x +ballRadius && tarX + tarWidth > x - ballRadius && tarY + tarHeight > y -ballRadius){
+			if(tarX < x + ballRadius && tarX + tarWidth > x - ballRadius && tarY + tarHeight > y -ballRadius){
 				tarY = Math.floor(Math.random() * 138);
 				tarX = Math.floor(Math.random() * 555);
 				drawTarget();
 				score += 1;
+				load -= 20;
 				resetBall();
 			}
 		};
@@ -359,6 +362,7 @@
 
 		function endGame(){
 			load += 1;
+			console.log(load);
 			if(load === 1){
 
 				resetBall(); // empeche la balle de continuer sa course que la partie ait recommencée
