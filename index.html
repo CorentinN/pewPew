@@ -27,6 +27,7 @@
 			color:#fff;
 			font-family: sans-serif;
 		}
+
 		#buttonStart {
 			padding: 25px;
 			background-color: lightgrey;
@@ -43,20 +44,24 @@
 			cursor:pointer;
 			background-color: #fff;
 		}
+
+
 		#gameOver{
 			width:650px;
 			height:520px;
 			background-color: #2c3e50;
 			margin:0 auto;
-
+			font-family: sans-serif;
 			display:flex;
 			justify-content: center;
 			align-items: center;
 			flex-direction: column;
 
 		}
-		#gameOver p{
+		#gameOver > *{
+			color:#fff;
 		}
+
 		#scoreEnd{
 			font-size:65px;
 			text-align:center;
@@ -69,8 +74,8 @@
 			height:60px;
 			padding:25px;
 			font-size:20px;
-			font-family: sans-serif;
-
+			color:black;
+			
 		}
 
 		#playAgain span:hover{
@@ -82,6 +87,23 @@
 			background: #2c3e50;
 		 	display: block; 
 			margin: 0 auto;
+		}
+		
+		#scoreBoard {
+			width:650px;
+			height:520px;
+			margin:0 auto;
+			font-family:sans-serif;
+		}
+
+		#scoreBoard ol li{
+			font-size:25px;
+			margin-top:4px;
+		}
+		#scoreBoard ol li:nth-child(odd){
+
+		background-color: lightgrey;
+
 		}
 	</style>
 </head>
@@ -105,10 +127,18 @@
 		</div>
 	</div> 
 
+
 	<div id="canvasContainer">
-		<canvas id = "myCanvas" width="650" height="520">
-	</canvas>
+		<canvas id = "myCanvas" width="650" height="520">Your browser doesn't support Canvas.</canvas>
 	</div>
+		
+	<div id= scoreBoard>
+
+		<h2>Your high scores</h2>
+		<ol id ="listScore">
+		</ol>
+	</div>
+
 	<script>
 
 
@@ -159,10 +189,14 @@
 		var toggleCanvas = document.getElementById("canvasContainer");
 		var targetButtonStart = document.getElementById("rules");
 		var toggleGameOver = document.getElementById("gameOver");
-		var addScore = document.getElementById("scoreEnd");
+		var selectListScore = document.getElementById("listScore");
 
 		toggleCanvas.style.display = "none";
 		toggleGameOver.style.display ="none";
+
+		// Highscore
+
+		
 
 		function displayToggleStart() {
 			
@@ -184,6 +218,7 @@
 				draw();
 			}
 		}
+		
 
 		
 		///////////
@@ -191,7 +226,7 @@
 		///////////
 
 		document.addEventListener("mousemove", mouseMoveHandler, false);
-		document.addEventListener("keyup", keyDownHandler, false);
+		document.addEventListener("keydown", keyDownHandler, false);
 
 		////////////
 
@@ -207,6 +242,7 @@
 		function keyDownHandler(e){
 
 			if (e.keyCode == 32){
+				e.preventDefault();
 				pressed = true;
 			}
 		};
@@ -267,7 +303,7 @@
 			}
 		};
 
-		// Reset ball sur son canon
+		// Reset ball a la position du canon
 		function resetBall(){
 			pressed = false;
 				y = (canvas.height - launchHeight) ;
@@ -275,17 +311,72 @@
 		}
 		// FIN DU JEU
 
+		var scoreArray = [];
+
+		var scoreToArray = 0 ;
+
+		//check si le score est deja dans la list 
+
+		function inArray(){
+
+			var count=scoreArray.length;
+
+			for(var i=0;i<count;i++){
+
+				if(scoreArray[i]===scoreToArray){
+					return false;
+					}
+				}
+			return true;
+		};
+
+		// Creation d'un array ou le score est pushé et trié par ordre décroissant, 
+
+		function createScoreArray(){
+
+			scoreToArray = score;
+
+			if(inArray()){
+				scoreArray.push(scoreToArray);
+				scoreArray.sort(function(a,b){return -a + b;});
+				scoreToArray = 0 ;
+				console.log(scoreArray);
+			};
+
+			console.log(scoreArray);
+					
+		};
+
+		function addScoreToHighScore(){
+			selectListScore.innerHTML = ""; // clean le tableau des scores avant de les mettre a jour
+			scoreArray.forEach(function(scoreElement){
+				var LI = document.createElement("li"); 
+				LI.innerHTML = scoreElement;
+				selectListScore.appendChild(LI);
+			});
+			
+		 };
+
 		function endGame(){
 			load += 1;
 			if(load === 1){
 
-				resetBall();
-				cancelAnimationFrame(request);
-				scoreEnd.insertAdjacentHTML('beforeend',score);
+				resetBall(); // empeche la balle de continuer sa course que la partie ait recommencée
+				cancelAnimationFrame(request); // pause requestAnimationFrame
+				scoreEnd.insertAdjacentHTML('beforeend',score); //Display score de la partie qui vient de se finir
+
+				createScoreArray();
+				
+				addScoreToHighScore();
+				// var LI = document.createElement("li"); 
+				// LI.innerHTML = newscore;
+		 	// 	selectListScore.appendChild(LI);
+
 				score= 0;
 				load = -canvas.height;
 				toggleCanvas.style.display = "none";
 				toggleGameOver.style.display ="";
+				
 
 			}
 		};
